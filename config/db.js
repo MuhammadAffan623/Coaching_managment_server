@@ -1,3 +1,4 @@
+const sql = require('mssql');
 const config = {
     server: 'DESKTOP-HG757M4',
     port: 1433,
@@ -12,4 +13,13 @@ const config = {
     },
 }
 
-module.exports = config;
+var con = sql.connect(config, (err) => {
+    if (err) console.log("error==>", err)
+    else {
+        console.log("DB connected")
+
+    }
+    
+})
+
+module.exports = {config,con};

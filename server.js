@@ -10,42 +10,27 @@ app.options('*', cors());
 
 app.use(bodyParser.json());
 
- 
-var con = sql.connect(config, (err) => {
-    if (err) console.log("error==>", err)
-    else {
-        console.log("DB connected")
 
-    }
-    
-})
+app.use(require("./routes/students"));
+app.use(require("./routes/teacher"));
 
- 
+app.get('/login', (req, res) => {
+    let {username,password} = req.body;
+    let statement = `SELECT * FROM Managment WHERE username = '${username}' and password='${password}'`;
+    console.log(statement);
+    con.query(statement, function (error, results ) {
+        console.log(results);
+    //   if (error) throw error;
+      if(!results.recordset) {
+        return res.status(400).send("error occured")
+      } else {
+        return res.status(200).send("ok")
+      }
+    });
+});
 
-app.get('/login',async (req, res) => {
 
-    try {
-        // let pool = `select * from Managment WHERE ( username = ${req.username} AND password = ${req.password} ) ;`
-        let pool = `select * from Managment;`
-        sql.query(pool, (err,res) => { 
-            if (err) {
-                console.log("error occured")
-                res.status(400).send("error occured")
-            } 
-            else {
-                console.log(res)
-                if (res.recordset.username == req.username && res.recordset.username == req.username) {
-                    console.log(res.recordset.username)
-                }
-            }
-        })
-    }
-    catch (error) {
-        console.log(error);
 
-    }
-    res.status(200).send("ok")
-})
 
 app.listen(port, () => {
     console.log(`server is running on port ${port}`);
