@@ -18,4 +18,37 @@ router.get('/students', (req, res) => {
     });
 });
 
+router.post('/addStudents', (req, res) => {
+    const { FirstName,LastName,Age,Address,Email } = req.body;
+    let statement = `insert into Students (FirstName,LastName,Age,Address,Email) 
+    values 
+    ('${FirstName}' , '${LastName}' ,${Age},'${Address}','${Email}');`;
+    console.log(statement);
+    con.query(statement, function (error, results, fields) {
+        console.log(results);
+      if (error) throw error;
+        
+       res.status(200).send("inserted")
+    });
+});
+
+router.get('/student/class', (req, res) => {
+    const {className} = req.body;
+    let statement = `SELECT Students.FirstName,Students.LastName,Students.StudentId,Students.CampusId,
+    Students.ClassId,Students.Age,Students.Email,Students.Address,Class.className,Class.Section
+    from Students 
+   INNER JOIN Class 
+   ON (Class.className='${className}' and Students.ClassId=Class.ClassId) ;`;
+    console.log(statement);
+    con.query(statement, function (error, results, fields) {
+        console.log(results);
+      if (error) throw error;
+      else {
+        return res.json({
+          data: results.recordset
+        })
+      };
+    });
+});
+
 module.exports = router;
