@@ -11,21 +11,6 @@ app.options('*', cors());
 app.use(bodyParser.json());
 
  
- 
-// const config = {
-//     server: 'DESKTOP-HG757M4',
-//     port: 1433,
-//     user: "affan",
-//     password: 'affan123',
-//     database: 'Sales',
-//     options: {
-//         trustServerCertificate: true,
-//         cryptoCredentialsDetails: {
-//             minVersion: 'TLSv1'
-//         }
-//     },
-// }
- 
 var con = sql.connect(config, (err) => {
     if (err) console.log("error==>", err)
     else {
@@ -35,16 +20,7 @@ var con = sql.connect(config, (err) => {
     
 })
 
-// async function getOrders() {
-//     try {
-//         let pool = await sql.connect(config);
-//         let products = await pool.request().query("select * from Managment");
-//         console.log (products)
-//     }
-//     catch (error) {
-//         console.log(error);
-//     }
-// }
+ 
 
 app.get('/login',async (req, res) => {
 
